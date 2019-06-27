@@ -965,7 +965,11 @@ extension Scanner {
 	}
 	
 	public func fhir_scanString(_ searchString: String) -> String? {
+        #if os(Linux)
+        var str: String?
+        #else
         var str: NSString?
+        #endif
         if scanString(searchString, into: &str) {
             return str as String?
         }
@@ -973,11 +977,15 @@ extension Scanner {
 	}
 	
 	public func fhir_scanCharacters(from set: CharacterSet) -> String? {
+        #if os(Linux)
+        return scanCharactersFromSet(set)
+        #else
         var str: NSString?
         if scanCharacters(from: set, into: &str) {
             return str as String?
         }
         return nil
+        #endif
 	}
 	
 	public func fhir_scanInt() -> Int? {
