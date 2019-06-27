@@ -955,48 +955,34 @@ extension TimeZone {
 
 /**
 Extend Scanner to account for interface differences between macOS and Linux (as of November 2016)
+ 
+ TODO: test on Linux
 */
 extension Scanner {
 	
 	public var fhir_isAtEnd: Bool {
-		#if os(Linux)
-		return atEnd
-		#else
 		return isAtEnd
-		#endif
 	}
 	
 	public func fhir_scanString(_ searchString: String) -> String? {
-		#if os(Linux)
-		return scanString(string: searchString)
-		#else
-		var str: NSString?
-		if scanString(searchString, into: &str) {
-			return str as String?
-		}
-		return nil
-		#endif
+        var str: NSString?
+        if scanString(searchString, into: &str) {
+            return str as String?
+        }
+        return nil
 	}
 	
 	public func fhir_scanCharacters(from set: CharacterSet) -> String? {
-		#if os(Linux)
-		return scanCharactersFromSet(set)
-		#else
-		var str: NSString?
-		if scanCharacters(from: set, into: &str) {
-			return str as String?
-		}
-		return nil
-		#endif
+        var str: NSString?
+        if scanCharacters(from: set, into: &str) {
+            return str as String?
+        }
+        return nil
 	}
 	
 	public func fhir_scanInt() -> Int? {
 		var int = 0
-		#if os(Linux)
-		let flag = scanInteger(&int)
-		#else
 		let flag = scanInt(&int)
-		#endif
 		return flag ? int : nil
 	}
 }
